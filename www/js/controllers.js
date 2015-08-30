@@ -18,7 +18,11 @@ function success(pos) {
       console.log('More or less ' + crd.accuracy + ' meters.');
    $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + $scope.lat + ',' + $scope.long + '&sensor=true').then(function(res) {
                 $scope.ourPosition = res.data.results[0].formatted_address
-                Yelp.getYelp($scope.ourPosition)
+                Yelp.getYelp($scope.ourPosition).success(function(data) {
+              console.log(data.businesses)
+              $scope.funPlaces=data.businesses
+            });
+
               })
   }, 3000)
 };

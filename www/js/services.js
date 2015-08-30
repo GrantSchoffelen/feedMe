@@ -30,9 +30,7 @@ angular.module('starter.services', [])
             params['oauth_signature'] = signature;
             return $http.jsonp(url, {
                 params: params
-            }).success(function(data) {
-              console.log(data)
-            });
+            })
 
         }
     }
