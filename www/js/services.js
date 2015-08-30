@@ -1,50 +1,39 @@
 angular.module('starter.services', [])
 
-.factory('Chats', function() {
-  // Might use a resource here that returns a JSON array
+.factory('Yelp', function($http, Settings) {
+    // Might use a resource here that returns a JSON array
 
-  // Some fake testing data
-  var chats = [{
-    id: 0,
-    name: 'Ben Sparrow',
-    lastText: 'You on your way?',
-    face: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png'
-  }, {
-    id: 1,
-    name: 'Max Lynx',
-    lastText: 'Hey, it\'s me',
-    face: 'https://avatars3.githubusercontent.com/u/11214?v=3&s=460'
-  }, {
-    id: 2,
-    name: 'Adam Bradleyson',
-    lastText: 'I should buy a boat',
-    face: 'https://pbs.twimg.com/profile_images/479090794058379264/84TKj_qa.jpeg'
-  }, {
-    id: 3,
-    name: 'Perry Governor',
-    lastText: 'Look at my mukluks!',
-    face: 'https://pbs.twimg.com/profile_images/598205061232103424/3j5HUXMY.png'
-  }, {
-    id: 4,
-    name: 'Mike Harrington',
-    lastText: 'This is wicked good ice cream.',
-    face: 'https://pbs.twimg.com/profile_images/578237281384841216/R3ae1n61.png'
-  }];
+    return {
+        getYelp: function(location) {
+            function randomString(length, chars) {
+                var result = '';
+                for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
+                return result;
+            }
+            var method = 'GET';
+            var url = 'http://api.yelp.com/v2/search';
+            var params = {
+                callback: 'angular.callbacks._0',
+                location: location,
+                oauth_consumer_key: Settings.oauth_consumer_key, //Consumer Key
+                oauth_token: Settings.oauth_token, //Token
+                oauth_signature_method: Settings.oauth_signature_method,
+                oauth_timestamp: new Date().getTime(),
+                oauth_nonce: randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),
+                term: 'bar'
+            };
+            var consumerSecret = Settings.consumerSecret; //Consumer Secret
+            var tokenSecret = Settings.tokenSecret; //Token Secret
+            var signature = oauthSignature.generate(method, url, params, consumerSecret, tokenSecret, {
+                encodeSignature: false
+            });
+            params['oauth_signature'] = signature;
+            return $http.jsonp(url, {
+                params: params
+            }).success(function(data) {
+              console.log(data)
+            });
 
-  return {
-    all: function() {
-      return chats;
-    },
-    remove: function(chat) {
-      chats.splice(chats.indexOf(chat), 1);
-    },
-    get: function(chatId) {
-      for (var i = 0; i < chats.length; i++) {
-        if (chats[i].id === parseInt(chatId)) {
-          return chats[i];
         }
-      }
-      return null;
     }
-  };
 });
