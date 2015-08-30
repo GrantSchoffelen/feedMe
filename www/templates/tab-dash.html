@@ -1,12 +1,20 @@
 <ion-view view-title="Dashboard">
   <ion-content class="padding">
     <div class="list card">
-      <div class="item item-divider">Recent Updates</div>
-      <div class="item item-body">
-        <div ng-repeat='biz in funPlaces'>
-        {{biz.name}}
-        </div>
+      <div class="item item-divider text-center">Nearest Food</div>
+      <div class="item item-body" ng-if='currentBar')>
+      <center><h1 class='text-center'>{{currentBar.name}}</h1>
+      <span ng-repeat='category in currentBar.categories'>
+        <i>{{category[0]}}</i>
+      </span>
+      <div> <img class='image-responsive middle-align' ng-src='{{currentBar.image_url}}'></div>
+       <div>{{currentBar.distance*0.00062137|limitTo : 4}}mi.</div>
+       <div>Rated:{{currentBar.rating}}</div>
+       <div>{{currentBar.snippet_text}}</div>
+       <div><a href='{{currentBar.mobile_url}}'target="_blank">{{currentBar.mobile_url}}</a></center>
+       </div>
       </div>
     </div>
+    <center><button class='btn btn-primary' ng-click='nextBar()' ng-disabled="!currentBar">Next Bar</button></center>
   </ion-content>
 </ion-view>

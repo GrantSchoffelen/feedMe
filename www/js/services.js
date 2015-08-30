@@ -20,7 +20,7 @@ angular.module('starter.services', [])
                 oauth_signature_method: Settings.oauth_signature_method,
                 oauth_timestamp: new Date().getTime(),
                 oauth_nonce: randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),
-                term: 'bar'
+                term: 'restaurant'
             };
             var consumerSecret = Settings.consumerSecret; //Consumer Secret
             var tokenSecret = Settings.tokenSecret; //Token Secret

@@ -2,11 +2,14 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope, Yelp, $timeout, $http) {
   
+
+
 var options = {
   enableHighAccuracy: true,
   timeout: 10000,
   maximumAge: 0
-};
+},
+barIndex=0;
 
 function success(pos) {
   $timeout(function(){
@@ -21,11 +24,22 @@ function success(pos) {
                 Yelp.getYelp($scope.ourPosition).success(function(data) {
               console.log(data.businesses)
               $scope.funPlaces=data.businesses
+
+              $scope.nextBar();
             });
 
               })
-  }, 3000)
+  }, 500)
 };
+
+$scope.nextBar=function(){
+  if(barIndex===$scope.funPlaces.length-1){
+    barIndex=0;
+  }
+  $scope.currentBar=$scope.funPlaces[barIndex]
+  barIndex++;
+}
+
 
 function error(err) {
   console.warn('ERROR(' + err.code + '): ' + err.message);
